@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cmn-Hans">
+    <meta charset="UTF-8">
+    <title>DSBridge Test</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,user-scalable=no"/>
+    <!--require dsbridge init js-->
+    <script src="dsbridge.js"></script>
+</head>
+<style>
+*{padding 0;margin:0}
+
+.poster {
+    position: absolute;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: flex-start;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    object-fit: contain;
+    z-index: 2;
+}
+
+.button {
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    border-style:solid;
+    z-index: 3;
+}
+
+
+</style>
+<body>
+
+<div class="poster">
+    <img src="https:\/\/pic.rmb.bdstatic.com\/bjh\/video\/c1705c5b0c58a308aa48d3e6fdbff88a.jpeg" width="100%"/>
+    <div class="button" onclick="play()">
+        <img src="video_play.png"/>
+    </div>
+</div>
+
+<script>
+
+    function play() {
+        dsBridge.call("start","start", function (v) {
+            alert(v)
+        })
+    }
+
+
+</script>
+</body>
+</html>
