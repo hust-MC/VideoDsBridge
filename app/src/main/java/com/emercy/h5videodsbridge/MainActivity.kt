@@ -1,7 +1,6 @@
 package com.emercy.h5videodsbridge
 
 import android.os.Bundle
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import wendu.dsbridge.DWebView
 

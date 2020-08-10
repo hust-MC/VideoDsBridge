@@ -13,7 +13,7 @@
 *{padding 0;margin:0}
 
 .poster {
-    position: absolute;
+    position: relative;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -46,16 +46,40 @@
     z-index: 3;
 }
 
+.btn {
+        position: relative
+        text-align: center;
+        background: #d8d8d8;
+        color: #222;
+        padding: 20px;
+        margin: 100px;
+        font-size: 24px;
+        border-radius: 4px;
+        box-shadow: 4px 2px 10px #999;
+    }
+
+    .btn:active {
+        opacity: .7;
+        box-shadow: 4px 2px 10px #555;
+    }
+
 
 </style>
 <body>
 
 <div class="poster">
-    <img src="https:\/\/pic.rmb.bdstatic.com\/bjh\/video\/c1705c5b0c58a308aa48d3e6fdbff88a.jpeg" width="100%"/>
+    <img src="https:\/\/pic.rmb.bdstatic.com\/bjh\/video\/c1705c5b0c58a308aa48d3e6fdbff88a.jpeg"
+         width="100%"/>
     <div class="button" onclick="play()">
         <img src="video_play.png"/>
     </div>
 </div>
+
+<div class="btn" onclick="pause()">暂停播放</div>
+<div class="btn" onclick="resume()">继续播放</div>
+<div class="btn" onclick="seekForward()">前进10秒</div>
+<div class="btn" onclick="seekBack()">后退10秒</div>
+
 
 <script>
 
@@ -64,6 +88,27 @@
             alert(v)
         })
     }
+    function pause() {
+        dsBridge.call("pause","pause", function (v) {
+            alert(v)
+        })
+    }
+    function resume() {
+        dsBridge.call("resume","resume", function (v) {
+            alert(v)
+        })
+    }
+    function seekForward() {
+        dsBridge.call("seek","10", function (v) {
+            alert(v)
+        })
+    }
+    function seekBack() {
+        dsBridge.call("seek","-10", function (v) {
+            alert(v)
+        })
+    }
+
 
 
 </script>
