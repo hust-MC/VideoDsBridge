@@ -12,3 +12,8 @@
 /captures
 .externalNativeBuild
 .cxx
+.idea
+/.idea
+/tuikit/build
+/middlewares/auto_roll_widget/build
+/middlewares/midw_router/build

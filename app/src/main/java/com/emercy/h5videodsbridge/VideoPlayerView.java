@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -13,31 +14,18 @@ import android.widget.VideoView;
 public class VideoPlayerView extends FrameLayout {
 
     VideoView mVideoView;
+
     public VideoPlayerView(Context context) {
         super(context);
-        init();
-    }
-
-    private void init() {
-        mVideoView = new VideoView(getContext());
-
-        mVideoView.post(new Runnable() {
-            @Override
-            public void run() {
-                LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                params.gravity = Gravity.CENTER;
-
-                ImageButton button = new ImageButton(getContext());
-                button.setBackgroundColor(Color.TRANSPARENT);
-                button.setImageResource(R.mipmap.video_play);
-//                addView(button, params);
-            }
-        });
-
     }
 
     public void play() {
+        mVideoView = new VideoView(getContext());
         addView(mVideoView);
+        LayoutInflater.from(getContext()).inflate(R.layout.video_controller_layout, VideoPlayerView.this, true);
+
+
+
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
