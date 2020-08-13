@@ -56,7 +56,6 @@ public class VideoPlayerView extends FrameLayout {
     }
 
     public void pause() {
-//        mVideoView.pause();
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
