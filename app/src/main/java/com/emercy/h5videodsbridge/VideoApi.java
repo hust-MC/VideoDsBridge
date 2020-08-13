@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class VideoApi {
     private Context mContext;
-    VideoPlayerView mVideoView;
+    private static VideoPlayerView mVideoView;
 
     private boolean mHasAttached;
 
@@ -55,5 +56,12 @@ public class VideoApi {
         int second = Integer.valueOf((String) msg);
         mVideoView.seekTo(mVideoView.getCurrentPosition() + second * 1000);
         return "pause success";
+    }
+
+    public static boolean onBackPressed() {
+        if (mVideoView != null) {
+            return mVideoView.onBack();
+        }
+        return false;
     }
 }

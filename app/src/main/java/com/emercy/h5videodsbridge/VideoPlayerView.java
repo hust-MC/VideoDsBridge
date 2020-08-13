@@ -1,6 +1,8 @@
 package com.emercy.h5videodsbridge;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.Image;
 import android.media.MediaPlayer;
@@ -12,6 +14,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -24,6 +28,7 @@ import androidx.annotation.NonNull;
 public class VideoPlayerView extends FrameLayout {
 
     VideoView mVideoView;
+    private static boolean mIsFull;
 
     public VideoPlayerView(Context context) {
         super(context);
@@ -31,7 +36,8 @@ public class VideoPlayerView extends FrameLayout {
 
     public void play() {
         mVideoView = new VideoView(getContext());
-        addView(mVideoView);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(mVideoView, params);
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -50,7 +56,13 @@ public class VideoPlayerView extends FrameLayout {
     }
 
     public void pause() {
-        mVideoView.pause();
+//        mVideoView.pause();
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                fullScreen();
+            }
+        });
     }
     public void seekTo(int second) {
         mVideoView.seekTo(second);
@@ -62,5 +74,42 @@ public class VideoPlayerView extends FrameLayout {
 
     public int getCurrentPosition() {
         return mVideoView.getCurrentPosition();
+    }
+
+    private int lastContainerWidth, lastContainerHeight;
+
+    public void fullScreen() {
+        Activity activity = (Activity) getContext();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        ViewGroup.LayoutParams param = getLayoutParams();
+        lastContainerWidth = param.width;
+        lastContainerHeight = param.height;
+        param.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        param.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        setLayoutParams(param);
+        mIsFull = true;
+    }
+
+    public void exitFullScreen() {
+        Activity activity = (Activity) getContext();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ViewGroup.LayoutParams param = getLayoutParams();
+        param.width = lastContainerWidth;
+        param.height = lastContainerHeight;
+        setLayoutParams(param);
+
+        mIsFull = false;
+    }
+
+    public boolean onBack() {
+        if (mIsFull) {
+            exitFullScreen();
+            return true;
+        }
+        return false;
     }
 }
