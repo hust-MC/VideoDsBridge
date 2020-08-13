@@ -56,13 +56,9 @@ public class VideoPlayerView extends FrameLayout {
     }
 
     public void pause() {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                fullScreen();
-            }
-        });
+        mVideoView.pause();
     }
+
     public void seekTo(int second) {
         mVideoView.seekTo(second);
     }
@@ -78,30 +74,40 @@ public class VideoPlayerView extends FrameLayout {
     private int lastContainerWidth, lastContainerHeight;
 
     public void fullScreen() {
-        Activity activity = (Activity) getContext();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        final Activity activity = (Activity) getContext();
 
-        ViewGroup.LayoutParams param = getLayoutParams();
-        lastContainerWidth = param.width;
-        lastContainerHeight = param.height;
-        param.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        param.height = ViewGroup.LayoutParams.MATCH_PARENT;
-        setLayoutParams(param);
-        mIsFull = true;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+                ViewGroup.LayoutParams param = getLayoutParams();
+                lastContainerWidth = param.width;
+                lastContainerHeight = param.height;
+                param.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                param.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                setLayoutParams(param);
+                mIsFull = true;
+            }
+        });
     }
 
     public void exitFullScreen() {
-        Activity activity = (Activity) getContext();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final Activity activity = (Activity) getContext();
 
-        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ViewGroup.LayoutParams param = getLayoutParams();
-        param.width = lastContainerWidth;
-        param.height = lastContainerHeight;
-        setLayoutParams(param);
-
-        mIsFull = false;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                ViewGroup.LayoutParams param = getLayoutParams();
+                param.width = lastContainerWidth;
+                param.height = lastContainerHeight;
+                setLayoutParams(param);
+                mIsFull = false;
+            }
+        });
     }
 
     public boolean onBack() {

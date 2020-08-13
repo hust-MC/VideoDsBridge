@@ -53,9 +53,21 @@ public class VideoApi {
 
     @JavascriptInterface
     public String seek(Object msg) {
-        int second = Integer.valueOf((String) msg);
+        int second = Integer.parseInt((String) msg);
         mVideoView.seekTo(mVideoView.getCurrentPosition() + second * 1000);
         return "pause success";
+    }
+
+    @JavascriptInterface
+    public String fullScreen(Object msg) {
+        mVideoView.fullScreen();
+        return "full screen";
+    }
+
+    @JavascriptInterface
+    public String exitFullScreen(Object msg) {
+        mVideoView.exitFullScreen();
+        return "exit full screen";
     }
 
     public static boolean onBackPressed() {

@@ -52,7 +52,7 @@
         background: #d8d8d8;
         color: #222;
         padding: 20px;
-        margin: 100px;
+        margin: 70px;
         font-size: 24px;
         border-radius: 4px;
         box-shadow: 4px 2px 10px #999;
@@ -79,7 +79,8 @@
 <div class="btn" onclick="resume()">继续播放</div>
 <div class="btn" onclick="seekForward()">前进10秒</div>
 <div class="btn" onclick="seekBack()">后退10秒</div>
-
+<div class="btn" onclick="fullScreen()">全屏播放</div>
+<div class="btn" onclick="exitFullScreen()">退出全屏</div>
 
 <script>
 
@@ -105,6 +106,16 @@
     }
     function seekBack() {
         dsBridge.call("seek","-10", function (v) {
+            alert(v)
+        })
+    }
+    function fullScreen() {
+        dsBridge.call("fullScreen","fullScreen", function (v) {
+            alert(v)
+        })
+    }
+    function exitFullScreen() {
+        dsBridge.call("exitFullScreen","exitFullScreen", function (v) {
             alert(v)
         })
     }
