@@ -9,6 +9,7 @@ public class VideoApi {
     private Context mContext;
     VideoPlayerView mVideoView;
 
+    private boolean mHasAttached;
 
     public VideoApi(Context context) {
         this.mContext = context;
@@ -17,6 +18,9 @@ public class VideoApi {
 
     @JavascriptInterface
     public String start(Object msg) {
+        if (mHasAttached) {
+            return "has Attached";
+        }
         final Activity activity = (Activity) mContext;
         activity.runOnUiThread(new Runnable() {
 
@@ -26,6 +30,7 @@ public class VideoApi {
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1080, 607);
 
                 contentView.addView(mVideoView, params);
+                mHasAttached = true;
                 mVideoView.play();
             }
         });
