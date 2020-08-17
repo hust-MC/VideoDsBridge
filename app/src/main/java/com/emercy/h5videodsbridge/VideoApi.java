@@ -6,6 +6,9 @@ import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class VideoApi {
     private Context mContext;
     private static VideoPlayerView mVideoView;
@@ -22,7 +25,24 @@ public class VideoApi {
         if (mHasAttached) {
             return "has Attached";
         }
+
+        String url = "";
+        int width = 0;
+        int height = 0;
+
+        try {
+            JSONObject videoInfo = new JSONObject((String) msg);
+            url = videoInfo.getString("url");
+            width = videoInfo.getInt("width");
+            height = videoInfo.getInt("height");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         final Activity activity = (Activity) mContext;
+        final String finalUrl = url;
+        final int finalWidth = width;
+        final int finalHeight = height;
         activity.runOnUiThread(new Runnable() {
 
             @Override
@@ -32,7 +52,7 @@ public class VideoApi {
 
                 contentView.addView(mVideoView, params);
                 mHasAttached = true;
-                mVideoView.play();
+                mVideoView.play(finalUrl);
             }
         });
 
